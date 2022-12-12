@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<launch>
+
+    <group ns="left">
+        <include file="$(find ur_robot_driver)/launch/left_ur5e_bringup.launch">
+            <arg name="robot_ip" value="192.168.1.124"/>
+            <arg name="reverse_port" value="50001"/>
+            <arg name="script_sender_port" value="50002"/>
+            <arg name="tf_prefix" value="left_"/>
+            <arg name="controllers" value="joint_state_controller cartesian_motion_controller force_torque_sensor_controller"/>
+            <arg name="stopped_controllers" value="joint_group_vel_controller"/>
+            <arg name="controller_config_file" value="$(find ur_robot_driver)/config/left_ur5e_controllers.yaml"/> 
+            <arg name="robot_description_file" value="$(find ur_description)/launch/load_left_ur5e.launch"/>
+            <arg name="kinematics_config" value="$(find ur_calibration)/etc/left_ur5e.yaml"/>
+ 
+        </include> 
+            
+            
+    </group>
+           
+
+    <group ns="right">
+        <include file="$(find ur_robot_driver)/launch/right_ur5e_bringup.launch">
+            <arg name="robot_ip" value="192.168.1.123"/>
+            <arg name="reverse_port" value="50005"/>
+            <arg name="script_sender_port" value="50006"/>
+            <arg name="tf_prefix" value="right_"/>
+            <arg name="controllers" value="joint_state_controller cartesian_motion_controller force_torque_sensor_controller"/>
+            <arg name="stopped_controllers" value="joint_group_vel_controller"/>
+            <arg name="controller_config_file" value="$(find ur_robot_driver)/config/right_ur5e_controllers.yaml"/>
+            <arg name="robot_description_file" value="$(find ur_description)/launch/load_right_ur5e.launch"/>
+            <arg name="kinematics_config" value="$(find ur_calibration)/etc/right_ur5e.yaml"/>
+        </include>
+
+
+    </group>
+
+    <arg name="my_rviz" value="-d $(find ur_robot_driver)/launch/dual_ur5e.rviz" />
+    <node name="rviz" pkg="rviz" type="rviz" respawn="false" args="$(arg my_rviz)" output="screen" />
+
+    <!-- <node pkg="serial_communication" type="serial_com" name="serial_com" output="screen" />
+    <node pkg="serial_communication" type="display" name="display" output="screen" /> -->
+
+    <node pkg="sigma_client" type="quaTrans" name="quaTrans" output="screen"/>
+    <node pkg="rqt_reconfigure" type="rqt_reconfigure" name="rqt_reconfigure" output="screen" />
+</launch>            
